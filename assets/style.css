@@ -1,0 +1,23 @@
+
+#vueApp .form-control{
+ max-width: 100% !important;
+}
+
+
+
+#vueApp .Forwarding-box .form-check-input {
+ margin-top: .3rem !important;
+ margin-left: -1.25rem !important;
+}
+
+
+
+
+#vueApp .summery-box {
+  padding: 20px;
+}
+
+#vueApp .summery-box .list-group-item-action.value{
+  font-size: 20px;
+}
+
