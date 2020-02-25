@@ -17,14 +17,16 @@ const Campaign = Vue.extend({
         };
     },
     mounted() {
-        this.getCampaign() ;
+        if(!this.$store.state.campaigns.length){
+            this.getCampaign() ;
+        }
     },
     methods: {
         createCampaignForm: function () {
             router.push('CreateCampaign');
         },
         getCampaign: async function(){
-            this.campaigns = await getRequest('Campaigns', false, true);
+            this.$store.state.campaigns = await getRequest('Campaigns', false, true);
         },
         goToDetails: function(phoneNumber){
             router.push({ name: 'CampaignDetails', params: { phoneNumber: phoneNumber }} );
@@ -37,16 +39,21 @@ const Campaign = Vue.extend({
 const CampaignDetails = Vue.extend({
     data: function () {
         return {
-            campaign: {}
+            single_campaign: {}
         };
     },
     mounted() {
-        this.getCampaignDetails()  ;
 
+        if(!this.$store.state.campaigns.length){
+            this.getCampaign() ;
+        }
     },
     computed: {
-        contact() {
-           return this.$route.params.phoneNumber;
+        campaign() {
+            let data = this.$store.state.campaigns.filter(item=>{
+                return this.$route.params.phoneNumber == item.phone_number
+            })
+            return data.length ? data[0] : {} ;
         }
     },
     methods: {
@@ -56,8 +63,12 @@ const CampaignDetails = Vue.extend({
                 webToast.Success({
                     status:'Success !',
                     message:'Campaign Updated Successfully'
-                })
+                });
+               // await this.getCampaign();
             }
+        },
+        getCampaign: async function(){
+            this.$store.state.campaigns = await getRequest('Campaigns', false, true);
         },
         getCampaignDetails: async function(){
             this.campaign = await getRequest('CampaignDetails/'+ (this.$route.params.phoneNumber).substr(1), false, true);

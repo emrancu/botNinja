@@ -4,6 +4,7 @@ namespace  App\system;
 class Request
 {
 
+    public $allData = [] ;
     function __construct()
     {
         $this->requestInit();
@@ -34,6 +35,7 @@ class Request
         $input = json_decode($inputJSON, true);
         foreach ($input as $key => $value) {
             $this->{$key} = $value;
+            $this->allData[$key] = $value;
         }
 
     }
@@ -47,6 +49,7 @@ class Request
     {
         foreach ($_POST as $key => $value) {
             $this->{$key} = $value;
+            $this->allData[$key] = $value;
         }
 
     }
@@ -60,6 +63,7 @@ class Request
     {
         foreach ($_GET as $key => $value) {
             $this->{$key} = $value;
+            $this->allData[$key] = $value;
         }
 
     }

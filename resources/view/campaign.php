@@ -42,7 +42,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(campaign, i) in campaigns">
+            <tr v-for="(campaign, i) in $store.state.campaigns">
                 <td>{{i+1}}</td>
                 <td>{{campaign.name}}</td>
                 <td>{{campaign.phone_number}}</td>
@@ -57,6 +57,7 @@
 
     </div>
 </template>
+
 
 
 <template id="dashboardCampaignDetails">
