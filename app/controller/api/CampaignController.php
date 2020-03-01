@@ -108,10 +108,11 @@ class CampaignController
         global $table_prefix,$wpdb;
         $request = new Request;
 
-         $tableName = $table_prefix.'bot_ninja_settings';
+
+          $tableName = $table_prefix.'bot_ninja_settings';
         $settings = $wpdb->get_row("SELECT * FROM $tableName", OBJECT);
           $endpoint = 'http://wpapi.chatleads.io/updateSettings';
-        $body = [
+         $body = [
             'license_key' => $settings->license_key,
             'api_key' => $settings->api_key,
             'campaign' =>  $request->allData
@@ -123,8 +124,8 @@ class CampaignController
         ];
 
 
-        $response = wp_remote_post($endpoint, $options);
-
+         $response = wp_remote_post($endpoint, $options);
+ 
         return json('Successfully Updated');
     }
 

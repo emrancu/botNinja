@@ -371,7 +371,7 @@
                                 <div class="form-check   form-check-inline">
                                     <input class="form-check-input" type="radio" name="callRecord"
                                            v-model="campaign.record"
-                                           id="callRecordEnable" value="enable" checked>
+                                           id="callRecordEnable" value="enabled" checked>
                                     <label class="form-check-label" for="callRecordEnable">
                                         Enabled
                                     </label>
