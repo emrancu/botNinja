@@ -20,16 +20,13 @@ class AddEnqueue extends EnqueueController
     {
         if ( 'toplevel_page_BotNinja' == $hook ) {
 
-            
-            $this->scriptHeader('assets/cdn/vue.js') ;
-            $this->scriptHeader('assets/cdn/vue-router.js') ;
-            $this->scriptHeader('assets/cdn/vuex.min.js') ;
-            $this->scriptHeader('assets/webToast.min.js') ;
+   ;
+         $this->scriptHeader('assets/webToast.min.js') ;
             $this->scriptFooter('assets/cdn/bootstrap.min.js') ;
-            $this->scriptFooter('assets/index.js', false, 'botNinjaScriptIndex') ;
-            $this->scriptFooter('assets/vueComponent/store.js') ;
-            $this->scriptFooter('assets/vueComponent/vueActions.js') ;
-            $this->scriptFooter('assets/vueComponent/vueApp.js') ;
+         $this->scriptFooter('assets/index.js', false, 'botNinjaScriptIndex') ;
+
+             $this->scriptFooter('assets/app.js') ;
+            //$this->scriptHot('app.js') ;
 
             $this->style('assets/cdn/bootstrap.min.css') ;
             $this->style('assets/style.css') ;
