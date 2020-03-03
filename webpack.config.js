@@ -9,7 +9,7 @@ const buildConfig = [
 
 /*
 * no need to change here
-* create configuration for webpack
+* generate configuration for webpack
 */
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
