@@ -14,7 +14,7 @@ class CampaignController
         global $table_prefix, $wpdb;
         $tableName = $table_prefix.'bot_ninja_settings';
 
-        $endpoint = 'http://wpapi.chatleads.io/getCampaign';
+        $endpoint = 'https://wpapi.chatleads.io/getCampaign';
         $campaign = $wpdb->get_row("SELECT * FROM $tableName", OBJECT);
 
         $body = [
@@ -79,7 +79,7 @@ class CampaignController
         global $table_prefix,$wpdb;
         $tableName = $table_prefix.'bot_ninja_settings';
 
-        $endpoint = 'http://wpapi.chatleads.io/createBot';
+        $endpoint = 'https://wpapi.chatleads.io/createBot';
         $campaign = $wpdb->get_row("SELECT * FROM $tableName", OBJECT);
 
         $body = [
@@ -111,7 +111,7 @@ class CampaignController
 
           $tableName = $table_prefix.'bot_ninja_settings';
         $settings = $wpdb->get_row("SELECT * FROM $tableName", OBJECT);
-          $endpoint = 'http://wpapi.chatleads.io/updateSettings';
+          $endpoint = 'https://wpapi.chatleads.io/updateSettings';
          $body = [
             'license_key' => $settings->license_key,
             'api_key' => $settings->api_key,
@@ -136,7 +136,7 @@ class CampaignController
         $tableName = $table_prefix.'bot_ninja_settings';
 
         $phoneNumber = $param['phoneNumber'];
-        $endpoint = 'http://wpapi.chatleads.io/getCampaignDetails';
+        $endpoint = 'https://wpapi.chatleads.io/getCampaignDetails';
         $campaign = $wpdb->get_row("SELECT * FROM $tableName", OBJECT);
 
         $body = [
