@@ -20,13 +20,12 @@ class AddEnqueue extends EnqueueController
     {
         if ('toplevel_page_BotNinja' == $hook) {
 
-            ;
             $this->scriptHeader('assets/webToast.min.js');
             $this->scriptFooter('assets/cdn/bootstrap.min.js');
             $this->scriptFooter('assets/index.js', false, 'botNinjaScriptIndex');
 
             $this->scriptFooter('assets/app.js');
-            //$this->scriptHot('app.js') ;
+           // $this->scriptHot('app.js') ;
 
             $this->style('assets/cdn/bootstrap.min.css');
             $this->style('assets/style.css');

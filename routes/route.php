@@ -1,21 +1,24 @@
 <?php
 
 
-use App\controller\api\CampaignController;
-use App\controller\api\DashboardController;
-use App\controller\api\SettingsController;
 
-$route->get('dashboard', [new DashboardController, 'dashboardResponse']);
+$route->get('dashboard/{id?}', 'DashboardController@dashboard');
 
-$route->get('Campaigns', [new CampaignController, 'getCampaignResponse']);
+$route->get('Campaigns', 'CampaignController@getCampaign');
 
-$route->post('createCampaign', [new CampaignController, 'createCampaignResponse'], true);
+$route->post('createCampaign', 'CampaignController@createCampaign', true);
 
-$route->post('UpdateCampaign', [new CampaignController, 'updateCampaignResponse'], true);
+$route->post('UpdateCampaign', 'CampaignController@updateCampaign', true);
 
-$route->get('CampaignDetails/(?P<phoneNumber>\d+)', [new CampaignController, 'getCampaignDetailsResponse']);
+$route->get('CampaignDetails/{phoneNumber}',  'CampaignController@getCampaignDetails' );
 
-$route->get('setting', [new SettingsController, 'getSettingResponse'], true);
+$route->get('setting', 'SettingsController@getSetting', true);
 
-$route->post('saveSetting', [new SettingsController, 'saveSettingResponse'], true);
+$route->post('saveSetting','SettingsController@saveSetting', true);
+
+
+$route->post('campaign-report','CampaignController@report');
+$route->post('call-summery','CampaignController@summery');
+
+
 

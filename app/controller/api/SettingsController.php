@@ -1,16 +1,17 @@
 <?php
 
-
 namespace App\controller\api;
 
+use App\system\controller\Controller;
 use App\system\Request;
 
 class SettingsController
 {
 
-
-    public function saveSettingResponse()
+    public function saveSetting()
     {
+
+
         global $table_prefix, $wpdb;
         $request = new Request;
 
@@ -39,7 +40,7 @@ class SettingsController
     }
 
 
-    public function getSettingResponse()
+    public function getSetting()
     {
         global $table_prefix, $wpdb;
 

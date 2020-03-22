@@ -2,19 +2,20 @@
 
 namespace App\controller\api;
 
+use App\system\controller\Controller;
 use App\system\Request;
 
-class CampaignController
+class CampaignController extends Controller
 {
 
 
-    public function getCampaignResponse()
+    public function getCampaign()
     {
 
         global $table_prefix, $wpdb;
-        $tableName = $table_prefix.'bot_ninja_settings';
+        $tableName = $table_prefix . 'bot_ninja_settings';
 
-        $endpoint = 'https://wpapi.chatleads.io/getCampaign';
+        $endpoint = config('environment')  === 'local' ? config('endpoints.campaign') : config('production_endpoints.campaign') ;
         $campaign = $wpdb->get_row("SELECT * FROM $tableName", OBJECT);
 
         $body = [
@@ -26,17 +27,17 @@ class CampaignController
             'body' => $body,
         ];
         $response = wp_remote_post($endpoint, $options);
-        $data = json_decode($response['body'] ,true) ;
+        $data = json_decode($response['body'], true);
 
         return json($data['data'], 200);
     }
 
 
-    public function createCampaignResponse()
+    public function createCampaign()
     {
 
-        global $table_prefix,$wpdb;
-        $tableName = $table_prefix.'bot_ninja_campaign';
+        global $table_prefix, $wpdb;
+        $tableName = $table_prefix . 'bot_ninja_campaign';
 
         $request = new Request;
         $phoneNUmber = $request->numberDetails['phoneNumber'];
@@ -51,7 +52,7 @@ class CampaignController
 
         try {
             $apiData = $this->phoneNumberCreate($request, $actual_link);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return json_encode($e->getMessage());
         }
 
@@ -65,7 +66,7 @@ class CampaignController
                 "capabilities" => json_encode($request->numberDetails['capabilities']),
                 "sid" => 'll',
                 "status" => "disable",
-                "created_at" =>  date("Y-m-d h:i:s"),
+                "created_at" => date("Y-m-d h:i:s"),
             ));
             return json('Successfully Created');
         } else {
@@ -76,16 +77,17 @@ class CampaignController
 
     public function phoneNumberCreate(Request $request, $url)
     {
-        global $table_prefix,$wpdb;
-        $tableName = $table_prefix.'bot_ninja_settings';
+        global $table_prefix, $wpdb;
+        $tableName = $table_prefix . 'bot_ninja_settings';
 
-        $endpoint = 'https://wpapi.chatleads.io/createBot';
+        $endpoint = config('environment')  === 'local' ? config('endpoints.createCampaign') : config('production_endpoints.createCampaign') ;
+
         $campaign = $wpdb->get_row("SELECT * FROM $tableName", OBJECT);
 
         $body = [
             'license_key' => $campaign->license_key,
             'api_key' => $campaign->api_key,
-            'data' =>  $request->allData
+            'data' => $request->allData
         ];
 
         $options = [
@@ -98,24 +100,24 @@ class CampaignController
 
         $response = wp_remote_post($endpoint, $options);
 
-        return  $response['body'] == 'string' ?  $response['body']  : json_decode( $response['body'] , true) ;
+        return $response['body'] == 'string' ? $response['body'] : json_decode($response['body'], true);
 
     }
 
 
-    public function updateCampaignResponse()
+    public function updateCampaign()
     {
-        global $table_prefix,$wpdb;
+        global $table_prefix, $wpdb;
         $request = new Request;
 
-
-          $tableName = $table_prefix.'bot_ninja_settings';
+        $tableName = $table_prefix . 'bot_ninja_settings';
         $settings = $wpdb->get_row("SELECT * FROM $tableName", OBJECT);
-          $endpoint = 'https://wpapi.chatleads.io/updateSettings';
-         $body = [
+        $endpoint = config('environment')  === 'local' ? config('endpoints.updateCampaign') : config('production_endpoints.updateCampaign') ;
+
+        $body = [
             'license_key' => $settings->license_key,
             'api_key' => $settings->api_key,
-            'campaign' =>  $request->allData
+            'campaign' => $request->allData
         ];
 
 
@@ -124,19 +126,18 @@ class CampaignController
         ];
 
 
-         $response = wp_remote_post($endpoint, $options);
- 
+        $response = wp_remote_post($endpoint, $options);
+
         return json('Successfully Updated');
     }
 
 
-    public function getCampaignDetailsResponse($param)
+    public function getCampaignDetails($param)
     {
         global $table_prefix, $wpdb;
-        $tableName = $table_prefix.'bot_ninja_settings';
+        $tableName = $table_prefix . 'bot_ninja_settings';
 
         $phoneNumber = $param['phoneNumber'];
-        $endpoint = 'https://wpapi.chatleads.io/getCampaignDetails';
         $campaign = $wpdb->get_row("SELECT * FROM $tableName", OBJECT);
 
         $body = [
@@ -148,10 +149,75 @@ class CampaignController
         $options = [
             'body' => $body,
         ];
+        $endpoint = config('environment')  === 'local' ? config('endpoints.campaign_details') : config('production_endpoints.campaign_details') ;
+
         $response = wp_remote_post($endpoint, $options);
-        $data = json_decode($response['body'] ,true) ;
+        $data = json_decode($response['body'], true);
 
         return json($data['data'], 200);
+
+    }
+
+
+    public function report()
+    {
+
+        global $table_prefix, $wpdb;
+        $tableName = $table_prefix . 'bot_ninja_settings';
+        $request = new Request;
+        $phoneNumber = $request->phone_number;
+        $campaign = $wpdb->get_row("SELECT * FROM $tableName", OBJECT);
+
+        $body = [
+            'license_key' => $campaign->license_key,
+            'api_key' => $campaign->api_key,
+            'phone_number' => $phoneNumber,
+            'month' => $request->month,
+        ];
+
+        $options = [
+            'body' => $body,
+        ];
+
+        $endpoint = config('environment')  === 'local' ? config('endpoints.campaign_report') : config('production_endpoints.campaign_report') ;
+        $response = wp_remote_post($endpoint, $options);
+        $data = json_decode($response['body'], true);
+
+        return json($data, 200);
+
+    }
+
+
+
+    public function summery()
+    {
+
+        global $table_prefix, $wpdb;
+
+        $tableName = $table_prefix . 'bot_ninja_settings';
+        $request = new Request;
+        $phoneNumber = $request->phone_number;
+
+        $campaign = $wpdb->get_row("SELECT * FROM $tableName", OBJECT);
+
+        $body = [
+            'license_key' => $campaign->license_key,
+            'api_key' => $campaign->api_key,
+            'phone_number' => $phoneNumber
+        ];
+
+
+
+        $options = [
+            'body' => $body,
+        ];
+
+
+        $endpoint = config('environment')  === 'local' ? config('endpoints.summery') : config('production_endpoints.summery') ;
+        $response = wp_remote_post($endpoint, $options);
+        $data = json_decode($response['body'], true);
+
+        return json($data, 200);
 
     }
 
